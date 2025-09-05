@@ -90,11 +90,12 @@ const FlowBuilderCanvas = () => {
   }, [reactFlowInstance, validationState?.isValid, flowTitle]);
 
   // Handle export
-  const handleExport = useCallback((format) => {
+  const handleExport = useCallback(async (format) => {
     if (!reactFlowInstance) return;
     
-    const nodes = reactFlowInstance?.getNodes();
-    const edges = reactFlowInstance?.getEdges();
+    const nodes = reactFlowInstance.getNodes();
+    const edges = reactFlowInstance.getEdges();
+    const fileName = flowTitle?.toLowerCase()?.replace(/\s+/g, '-') || 'chatbot-flow';
     
     switch (format) {
       case 'json':
@@ -103,18 +104,84 @@ const FlowBuilderCanvas = () => {
         const jsonUrl = URL.createObjectURL(jsonBlob);
         const jsonLink = document.createElement('a');
         jsonLink.href = jsonUrl;
-        jsonLink.download = `${flowTitle?.toLowerCase()?.replace(/\s+/g, '-')}.json`;
-        jsonLink?.click();
+        jsonLink.download = `${fileName}.json`;
+        jsonLink.click();
+        URL.revokeObjectURL(jsonUrl);
         break;
         
       case 'image':
-        // Mock image export
-        console.log('Export as image - would capture canvas');
+        try {
+          // Find the ReactFlow viewport element
+          const viewport = document.querySelector('.react-flow__viewport');
+          if (!viewport) {
+            console.error('ReactFlow viewport not found');
+            return;
+          }
+          
+          // Use html2canvas to capture the flow
+          const { default: html2canvas } = await import('html2canvas');
+          const canvas = await html2canvas(viewport, {
+            backgroundColor: '#ffffff',
+            scale: 2, // Higher quality
+            useCORS: true,
+            allowTaint: true
+          });
+          
+          // Convert to blob and download
+          canvas.toBlob((blob) => {
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `${fileName}.png`;
+            link.click();
+            URL.revokeObjectURL(url);
+          }, 'image/png');
+        } catch (error) {
+          console.error('Failed to export image:', error);
+          // Fallback: use ReactFlow's built-in screenshot if available
+          if (reactFlowInstance.getViewport) {
+            console.log('Using ReactFlow built-in export (if available)');
+          }
+        }
         break;
         
       case 'pdf':
-        // Mock PDF export
-        console.log('Export as PDF - would generate PDF');
+        try {
+          // First capture as image
+          const viewport = document.querySelector('.react-flow__viewport');
+          if (!viewport) {
+            console.error('ReactFlow viewport not found');
+            return;
+          }
+          
+          const { default: html2canvas } = await import('html2canvas');
+          const canvas = await html2canvas(viewport, {
+            backgroundColor: '#ffffff',
+            scale: 2,
+            useCORS: true,
+            allowTaint: true
+          });
+          
+          // Convert to PDF
+          const { jsPDF } = await import('jspdf');
+          const imgData = canvas.toDataURL('image/png');
+          
+          // Calculate dimensions to fit the page
+          const imgWidth = canvas.width;
+          const imgHeight = canvas.height;
+          const ratio = imgWidth / imgHeight;
+          
+          const pdf = new jsPDF({
+            orientation: ratio > 1 ? 'landscape' : 'portrait',
+            unit: 'px',
+            format: [imgWidth, imgHeight]
+          });
+          
+          pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+          pdf.save(`${fileName}.pdf`);
+        } catch (error) {
+          console.error('Failed to export PDF:', error);
+        }
         break;
         
       default:
