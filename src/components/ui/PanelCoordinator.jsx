@@ -323,9 +323,9 @@ const PanelCoordinator = ({
           <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
             <Icon name="Layers" size={16} color="var(--color-primary)" />
           </div>
-          <div className="w-8 h-8 bg-muted rounded-lg flex items-center justify-center">
+          {/* <div className="w-8 h-8 bg-muted rounded-lg flex items-center justify-center">
             <Icon name="Settings" size={16} color="var(--color-muted-foreground)" />
-          </div>
+          </div> */}
         </div>
       </div>
     );
