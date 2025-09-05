@@ -6,6 +6,15 @@ A modern React-based chatbot flow builder application that allows users to creat
 
 **[View Live Application](https://chatbot-flow-builder-seven-puce.vercel.app)**
 
+## Screenshots
+
+### Saved workflow
+<img width="1851" height="944" alt="image" src="https://github.com/user-attachments/assets/a383304d-d423-4070-9104-22c77d933ae2" />
+
+### Error workflow
+<img width="1851" height="944" alt="image" src="https://github.com/user-attachments/assets/e147bd49-8901-4013-bd16-6cb374068510" />
+
+
 ## 🚀 Features
 
 - **Interactive Flow Builder** - Drag-and-drop interface for creating chatbot conversation flows
