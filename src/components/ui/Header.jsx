@@ -83,8 +83,12 @@ const Header = ({
         {/* Logo and Brand */}
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <Icon name="Workflow" size={20} color="white" />
+            <div className="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center">
+              <img 
+                src="/logo.jpeg" 
+                alt="Chatbot Flow Builder Logo" 
+                className="w-full h-full object-cover"
+              />
             </div>
             <div className="flex flex-col">
               <span className="text-sm font-semibold text-foreground">
