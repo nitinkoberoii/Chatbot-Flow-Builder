@@ -1,0 +1,213 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Core Colors */
+    --color-background: #FAFAFA; /* warm off-white */
+    --color-foreground: #1E293B; /* deep charcoal */
+    --color-border: #E2E8F0; /* light gray */
+    --color-input: #FFFFFF; /* white */
+    --color-ring: #2563EB; /* blue-600 */
+    
+    /* Surface Colors */
+    --color-card: #FFFFFF; /* white */
+    --color-card-foreground: #1E293B; /* deep charcoal */
+    --color-popover: #FFFFFF; /* white */
+    --color-popover-foreground: #1E293B; /* deep charcoal */
+    
+    /* Muted Colors */
+    --color-muted: #F1F5F9; /* slate-100 */
+    --color-muted-foreground: #64748B; /* slate-500 */
+    
+    /* Primary Colors */
+    --color-primary: #2563EB; /* blue-600 */
+    --color-primary-foreground: #FFFFFF; /* white */
+    
+    /* Secondary Colors */
+    --color-secondary: #64748B; /* slate-500 */
+    --color-secondary-foreground: #FFFFFF; /* white */
+    
+    /* Accent Colors */
+    --color-accent: #7C3AED; /* violet-600 */
+    --color-accent-foreground: #FFFFFF; /* white */
+    
+    /* State Colors */
+    --color-success: #059669; /* emerald-600 */
+    --color-success-foreground: #FFFFFF; /* white */
+    --color-warning: #D97706; /* amber-600 */
+    --color-warning-foreground: #FFFFFF; /* white */
+    --color-error: #DC2626; /* red-600 */
+    --color-error-foreground: #FFFFFF; /* white */
+    --color-destructive: #DC2626; /* red-600 */
+    --color-destructive-foreground: #FFFFFF; /* white */
+    
+    /* Canvas Specific Colors */
+    --color-canvas: #FAFAFA; /* warm off-white */
+    --color-canvas-grid: #E2E8F0; /* light gray */
+    --color-node-default: #FFFFFF; /* white */
+    --color-node-selected: #2563EB; /* blue-600 */
+    --color-connection-valid: #059669; /* emerald-600 */
+    --color-connection-invalid: #DC2626; /* red-600 */
+    --color-panel: #FFFFFF; /* white */
+    --color-panel-border: #E2E8F0; /* light gray */
+    
+    /* Elevation Shadows */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+    --shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.2);
+    
+    /* Animation Timings */
+    --timing-micro: 150ms;
+    --timing-panel: 250ms;
+    --timing-canvas: 400ms;
+    --easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    font-weight: 500;
+  }
+  
+  .font-mono {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  }
+}
+
+@layer components {
+  /* Canvas Grid Pattern */
+  .canvas-grid {
+    background-image: 
+      radial-gradient(circle, var(--color-canvas-grid) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  
+  /* Node Styles */
+  .node-handle {
+    @apply transition-all duration-150 ease-out;
+  }
+  
+  .node-handle:hover {
+    @apply scale-110;
+  }
+  
+  /* Panel Transitions */
+  .panel-slide-enter {
+    transform: translateX(-100%);
+  }
+  
+  .panel-slide-enter-active {
+    transform: translateX(0);
+    transition: transform var(--timing-panel) var(--easing-standard);
+  }
+  
+  .panel-slide-exit {
+    transform: translateX(0);
+  }
+  
+  .panel-slide-exit-active {
+    transform: translateX(-100%);
+    transition: transform var(--timing-panel) var(--easing-standard);
+  }
+  
+  /* Floating Controls */
+  .floating-control {
+    @apply backdrop-blur-sm bg-white/90 border border-border rounded-lg shadow-md;
+    backdrop-filter: blur(8px);
+  }
+  
+  /* Connection States */
+  .connection-valid {
+    stroke: var(--color-connection-valid);
+    stroke-width: 2px;
+  }
+  
+  .connection-invalid {
+    stroke: var(--color-connection-invalid);
+    stroke-width: 2px;
+    stroke-dasharray: 5, 5;
+    animation: dash 1s linear infinite;
+  }
+  
+  @keyframes dash {
+    to {
+      stroke-dashoffset: -10;
+    }
+  }
+  
+  /* Save Button Pulse */
+  .save-pulse {
+    animation: pulse-error 2s infinite;
+  }
+  
+  @keyframes pulse-error {
+    0%, 100% {
+      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.15);
+    }
+    50% {
+      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+    }
+  }
+  
+  /* Micro-interactions */
+  .micro-scale {
+    @apply transition-transform duration-150 ease-out;
+  }
+  
+  .micro-scale:hover {
+    @apply scale-105;
+  }
+  
+  .micro-scale:active {
+    @apply scale-95;
+  }
+}
+
+@layer utilities {
+  /* Layout Utilities */
+  .app-header-height {
+    height: 60px;
+  }
+  
+  .panel-width {
+    width: 300px;
+  }
+  
+  .canvas-area {
+    width: calc(100vw - 300px);
+    height: calc(100vh - 60px);
+  }
+  
+  /* Responsive Canvas */
+  @media (max-width: 768px) {
+    .canvas-area {
+      width: 100vw;
+    }
+  }
+  
+  /* Focus Styles */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2;
+  }
+  
+  /* Text Utilities */
+  .text-balance {
+    text-wrap: balance;
+  }
+}
