@@ -274,6 +274,19 @@ const FlowCanvas = ({
         zoomOnScroll={true}
         zoomOnPinch={true}
         zoomOnDoubleClick={false}
+        defaultEdgeOptions={{
+          type: 'default',
+          markerEnd: {
+            type: 'arrowclosed',
+            color: '#64748b',
+            width: 10,
+            height: 10
+          },
+          style: {
+            strokeWidth: 2,
+            stroke: '#64748b'
+          }
+        }}
       >
         <Background 
           variant="dots" 
